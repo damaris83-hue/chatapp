@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat App - Mam's Project</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: Arial; }
+body { background:#111b21; display:flex; height:100vh; }
+
+.sidebar { width:35%; background:#111b21; border-right:1px solid #222d34; color:white; }
+.sidebar-header { background:#202c33; padding:15px; font-size:20px; font-weight:bold; }
+.contact { padding:15px; border-bottom:1px solid #222d34; cursor:pointer; display:flex; align-items:center; gap:15px; }
+.contact:hover { background:#202c33; }
+.contact.active { background:#2a3942; }
+.avatar { width:45px; height:45px; background:#00a884; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; }
+
+.chat-area { width:65%; background:#0b141a; display:flex; flex-direction:column; }
+.chat-header { background:#202c33; color:white; padding:15px; display:flex; align-items:center; gap:15px; }
+.messages { flex:1; padding:20px; overflow-y:auto; background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-color:#0b141a; }
+.msg { max-width:60%; padding:8px 12px; border-radius:8px; margin:5px 0; }
+.msg.sent { background:#005c4b; color:white; margin-left:auto; }
+.msg.received { background:#202c33; color:white; }
+.input-area { background:#202c33; padding:10px; display:flex; gap:10px; }
+.input-area input { flex:1; padding:12px; border-radius:8px; border:none; outline:none; background:#2a3942; color:white; }
+.input-area button { background:#00a884; border:none; padding:12px 20px; border-radius:8px; color:white; font-weight:bold; cursor:pointer; }
+
+/* Responsive from yesterday! */
+@media(max-width:768px){
+  .sidebar{ width:100%; display:none; }
+  .sidebar.show{ display:block; }
+  .chat-area{ width:100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar show" id="sidebar">
+  <div class="sidebar-header">💬 Mam's Chats</div>
+  <div class="contact active" onclick="openChat('Meta AI')"><div class="avatar">M</div><div><b>Meta AI</b><br><small>Morning Mam! 💻</small></div></div>
+  <div class="contact" onclick="openChat('Mam')"><div class="avatar" style="background:#6b7c93;">M</div><div><b>Mam</b><br><small>Glory to God 🙏</small></div></div>
+  <div class="contact" onclick="openChat('Class Group')"><div class="avatar" style="background:#e542a3;">C</div><div><b>Class Group</b><br><small>Project done!</small></div></div>
+</div>
+
+<div class="chat-area">
+  <div class="chat-header">
+    <span style="cursor:pointer;" onclick="showSidebar()">☰</span>
+    <div class="avatar">M</div>
+    <b id="chatName">Meta AI</b>
+  </div>
+  <div class="messages" id="messages">
+    <div class="msg received">Morning Mam! 💻 Ready to code chat app?</div>
+    <div class="msg sent">Yes! Continue chat app projects</div>
+    <div class="msg received">Glory to God Mam! Let's build it! 🙏🤍</div>
+  </div>
+  <div class="input-area">
+    <input type="text" id="msgInput" placeholder="Type a message" onkeypress="if(event.key==='Enter')sendMsg()">
+    <button onclick="sendMsg()">Send ➤</button>
+  </div>
+</div>
+
+<script>
+function sendMsg(){
+  let input = document.getElementById('msgInput');
+  if(input.value.trim()=='') return;
+  let div = document.createElement('div');
+  div.className='msg sent';
+  div.innerText=input.value;
+  document.getElementById('messages').appendChild(div);
+  input.value='';
+  document.getElementById('messages').scrollTop = 99999;
+  
+  // Auto reply like Meta AI!
+  setTimeout(()=>{
+    let reply = document.createElement('div');
+    reply.className='msg received';
+    reply.innerText='Wow Mam! You sent: ' + div.innerText + ' 💬 Glory to God!';
+    document.getElementById('messages').appendChild(reply);
+    document.getElementById('messages').scrollTop = 99999;
+  }, 800);
+}
+function openChat(name){
+  document.getElementById('chatName').innerText=name;
+  if(window.innerWidth<768){
+    document.getElementById('sidebar').classList.remove('show');
+  }
+}
+function showSidebar(){
+  document.getElementById('sidebar').classList.add('show');
+}
+</script>
+
+</body>
+</html>
